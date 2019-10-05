@@ -1,0 +1,40 @@
+version: "3"
+services:
+  mysqlwp:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpressdocker
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpresspwd
+    volumes:
+      - datawp:/var/lib/mysql
+    networks:
+      - netwp
+  wordpress:
+    depends_on:
+      - mysqlwp    
+    # replace username/repo:tag with your name and image details
+    image: wordpress:latest
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mysqlwp
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpresspwd
+    ports:
+      - "8000:80"
+    networks:
+      - netwp
+  adminerwp:
+    image: adminer:latest
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - netwp
+networks:
+  netwp:
+volumes:
+  datawp: {}
