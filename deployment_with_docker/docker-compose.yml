@@ -1,0 +1,34 @@
+version: '2'
+services:
+  application_server:
+    build:
+      dockerfile: Dockerfile
+      context: 'application_server'
+    image: application_server:latest
+    restart: always
+    volumes:
+      - ./.htpasswd:/srv/www/html/.htpasswd
+    environment:
+      DB_HOST: db_server
+  db_server:
+    build:
+      dockerfile: Dockerfile
+      context: 'db_server'
+    image: db_server:latest
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+  web_server:
+    build:
+      dockerfile: Dockerfile
+      context: 'web_server'
+    image: nginx:latest
+    restart: always
+    depends_on:
+      - application_server
+    ports:
+      - "8080:80"
+volumes:
+  mongo-data:
+  mongo-config:

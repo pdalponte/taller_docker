@@ -25,6 +25,7 @@ docker container run \
 --rm \
 -d \
 -p 8080:80 \
+-v $PWD/.htpasswd:/srv/www/html/.htpasswd \
 --name web_server \
 --network mired \
 web_server
