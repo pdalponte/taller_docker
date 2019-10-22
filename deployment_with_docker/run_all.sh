@@ -7,7 +7,8 @@ docker container run \
 --rm \
 -d \
 -p 27017:27017 \
--v datamongo:/data/db \
+-v mongo-data:/data/db \
+-v mongo-config:/data/configdb \
 --name db_server \
 --network mired \
 db_server
