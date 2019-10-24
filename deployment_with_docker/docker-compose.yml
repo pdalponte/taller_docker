@@ -4,17 +4,17 @@ services:
     build:
       dockerfile: Dockerfile
       context: 'application_server'
-    image: application_server:latest
+    image: application_server:1.0
     restart: always
-    volumes:
-      - ./.htpasswd:/srv/www/html/.htpasswd
+    depends_on:
+      - db_server
     environment:
       DB_HOST: db_server
   db_server:
     build:
       dockerfile: Dockerfile
       context: 'db_server'
-    image: db_server:latest
+    image: db_server:1.0
     restart: always
     volumes:
       - mongo-data:/data/db
@@ -23,8 +23,10 @@ services:
     build:
       dockerfile: Dockerfile
       context: 'web_server'
-    image: nginx:latest
+    image: web_server:1.0
     restart: always
+    volumes:
+      - ./html:/srv/www/html
     depends_on:
       - application_server
     ports:

@@ -11,7 +11,7 @@ docker container run \
 -v mongo-config:/data/configdb \
 --name db_server \
 --network mired \
-db_server
+db_server:1.0
 
 docker container run \
 --rm \
@@ -20,13 +20,13 @@ docker container run \
 -e DB_HOST=db_server \
 --name application_server \
 --network mired \
-application_server
+application_server:1.0
 
 docker container run \
 --rm \
 -d \
 -p 8080:80 \
--v $PWD/.htpasswd:/srv/www/html/.htpasswd \
+-v $PWD/html:/srv/www/html \
 --name web_server \
 --network mired \
-web_server
+web_server:1.0
